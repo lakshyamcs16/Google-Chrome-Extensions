@@ -25,16 +25,7 @@ $(function(){
 
 		 }
 	};
-	xhttp.open("GET", "https://www.googleapis.com/gmail/v1/users/me/messages?access_token="+token+"&q="+query, true);
-	xhttp.send();
-  // if (msg.action == 'open_dialog_box') {
-	//
-	//
-	// 	sendResponse({
-  //       response: $('.Q8LRLc').text()
-  //   });
-  // }
-
-
-});
+		xhttp.open("GET", "https://www.googleapis.com/gmail/v1/users/me/messages?access_token="+token+"&q="+query, true);
+		xhttp.send();
+	});
 });
