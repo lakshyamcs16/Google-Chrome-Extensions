@@ -1,28 +1,3 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-/*
-'use strict';
-
-chrome.runtime.onInstalled.addListener(function() {
-  chrome.storage.sync.set({color: 'black'}, function() {
-    console.log("The color is green.");
-  });
-
-chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-      chrome.declarativeContent.onPageChanged.addRules([{
-        conditions: [new chrome.declarativeContent.PageStateMatcher({
-          pageUrl: {hostEquals: 'ivpcloud.com'},
-        })
-        ],
-            actions: [new chrome.declarativeContent.ShowPageAction()]
-      }]);
-    });
-});
-*/
-
-
 const LABELS = "https://www.googleapis.com//gmail/v1/users/me/labels";
 
 //oauth2 auth
@@ -88,42 +63,21 @@ function authorize(){
 }
 
 function gmailAPILoaded(){
-    //do stuff here
     console.log("LOADED");
 		loadDoc();
 	}
 
 	function loadDoc(url, token) {
-	  // var xhttp = new XMLHttpRequest();
-	  // xhttp.onreadystatechange = function() {
-	  //   if (this.readyState == 4 && this.status == 200) {
-		// 		var parsed = JSON.parse(this.responseText);
-	  //      console.log(parsed.snippet);
-				//  chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-				//
-				//  chrome.tabs.sendMessage(tabs[0].id, {content: parsed.snippet}, function(response) {
-				// 	 	if(response) {
-				// 	 		//We do something
-				// 	 	}
-				// 	});
-				// });
-
-				chrome.extension.onConnect.addListener(function(port) {
+	 		       chrome.extension.onConnect.addListener(function(port) {
 			       console.log("Connected .....");
 			       port.onMessage.addListener(function(msgfrompop) {
-			            console.log("message recieved" + msgfrompop);
-							//		var msg = parsed.snippet;
-									chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-									    chrome.tabs.sendMessage(tabs[0].id, {token: tok}, function(response) {
-													//alert(response.response);
-											});
-									});
-							//		msg = msg.substr(msg.search("OTP is "), 13).split(" ");
-			         //   port.postMessage("OTP: " + msg[msg.length-1]);
+			                console.log("message recieved" + msgfrompop);
+					chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+						chrome.tabs.sendMessage(tabs[0].id, {token: tok}, function(response) {
+						});
+					});
+							
 			       });
 			  })
-	  //   }
-	  // };
-	  // xhttp.open("GET", "https://www.googleapis.com/gmail/v1/users/me/messages/16500df08fbbc1c0?access_token="+tok, true);
-	  // xhttp.send();
+	 
 	}
