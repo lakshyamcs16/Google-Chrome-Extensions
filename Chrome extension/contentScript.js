@@ -2,7 +2,6 @@ $(function(){
 
 	chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
 
-		debugger;
 		if(msg.status === 'getRequestId') {
 			var query =	$('.successMsg strong').text();	
 			if($('#dynamic').length < 1) {
