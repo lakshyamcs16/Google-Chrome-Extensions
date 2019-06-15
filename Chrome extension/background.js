@@ -1,28 +1,3 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-/*
-'use strict';
-
-chrome.runtime.onInstalled.addListener(function() {
-  chrome.storage.sync.set({color: 'black'}, function() {
-    console.log("The color is green.");
-  });
-
-chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-      chrome.declarativeContent.onPageChanged.addRules([{
-        conditions: [new chrome.declarativeContent.PageStateMatcher({
-          pageUrl: {hostEquals: 'ivpcloud.com'},
-        })
-        ],
-            actions: [new chrome.declarativeContent.ShowPageAction()]
-      }]);
-    });
-});
-*/
-
-
 const LABELS = "https://www.googleapis.com//gmail/v1/users/me/labels";
 
 //oauth2 auth
@@ -65,15 +40,12 @@ function loadScript(url, token){
 function requestComplete() {
 	if (this.status == 401 && retry) {
 		retry = false;
-		chrome.identity.removeCachedAuthToken({ token: access_token },
-																					getToken);
+		chrome.identity.removeCachedAuthToken({ token: access_token },getToken);
 	}
 }
 
 
 function authorize(){
-//  gapi.auth.setToken({access_token:tok})
-	//console.log(tok);
   gapi.auth.authorize(
 		{
 			client_id: '688351606222-188aavbalb1q0q5c97fccjm2ip09lc63.apps.googleusercontent.com',
@@ -88,40 +60,57 @@ function authorize(){
 }
 
 function gmailAPILoaded(){
-    //do stuff here
-    console.log("LOADED");
+        console.log("LOADED");
 		loadDoc();
 	}
 
-	function loadDoc(url, token) {
-	  // var xhttp = new XMLHttpRequest();
-	  // xhttp.onreadystatechange = function() {
-	  //   if (this.readyState == 4 && this.status == 200) {
-		// 		var parsed = JSON.parse(this.responseText);
-	  //      console.log(parsed.snippet);
-				//  chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-				//
-				//  chrome.tabs.sendMessage(tabs[0].id, {content: parsed.snippet}, function(response) {
-				// 	 	if(response) {
-				// 	 		//We do something
-				// 	 	}
-				// 	});
-				// });
+	function loadDoc() {
+		var otp = '';
+		chrome.browserAction.onClicked.addListener(function(tab) { 
+			chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+				chrome.tabs.sendMessage(tabs[0].id, {token: tok, status: 'getRequestId'}, function(response) {
+					
+				});
+			});
+		});
 
-				chrome.browserAction.onClicked.addListener(function(tab) { 
+		chrome.runtime.onMessage.addListener(
+			function(request, sender, sendResponse) {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						console.log(this.responseText);
+						var parsed = JSON.parse(this.responseText);
+						let threadId = parsed.messages[0].id;
 
-							//		var msg = parsed.snippet;
-									chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-									    chrome.tabs.sendMessage(tabs[0].id, {token: tok}, function(response) {
-													//alert(response.response);
-											});
+
+								var req = new XMLHttpRequest();
+								req.onreadystatechange = function() {
+								if (this.readyState == 4 && this.status == 200) {
+									var parsed = JSON.parse(this.responseText);
+									var msg = parsed.snippet;
+									msg = msg.substr(msg.search("OTP is "), 13).split(" ");
+									if(msg.length == 3){
+										otp = msg[msg.length-1];
+									}else{
+										otp = msg[msg.length-2];
+									}
+
+									chrome.tabs.query({active: true}, function(tabs){ 
+										chrome.tabs.sendMessage(tabs[0].id, {otp: otp}, function(response) { 
+
+										}); 
 									});
-							//		msg = msg.substr(msg.search("OTP is "), 13).split(" ");
-			         //   port.postMessage("OTP: " + msg[msg.length-1]);
-			       });
-			  
-	  //   }
-	  // };
-	  // xhttp.open("GET", "https://www.googleapis.com/gmail/v1/users/me/messages/16500df08fbbc1c0?access_token="+tok, true);
-	  // xhttp.send();
+								}
+							}
+							req.open("GET", "https://www.googleapis.com/gmail/v1/users/me/messages/"+threadId+"?access_token="+tok, true);
+							req.send();
+
+					}
+				}
+				xhttp.open("GET", "https://www.googleapis.com/gmail/v1/users/me/messages?access_token="+tok+"&q="+request.query, true);
+				xhttp.send();
+			}
+		);
+
 	}
