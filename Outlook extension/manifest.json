@@ -14,7 +14,7 @@
      "js": ["jquery.min.js", "contentScript.js"]
    }
   ],
-  "content_security_policy": "script-src https://*.google.com 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'",
   "oauth2": {
     "client_id": "688351606222-188aavbalb1q0q5c97fccjm2ip09lc63.apps.googleusercontent.com",
     "scopes": [
