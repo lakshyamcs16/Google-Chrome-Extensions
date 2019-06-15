@@ -1,0 +1,43 @@
+{
+  "name": "IVP Stratus",
+  "version": "1.0",
+  "description": "An extension which makes it easier to login even with an E-mail OTP!",
+  "options_page": "options.html",
+  "permissions": ["activeTab", "declarativeContent", "storage", "identity", "*://*.google.com/*"],
+  "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+  "content_scripts": [
+   {
+     "matches": ["https://ivpcloud.com/*", "http://localhost:8084/*"],
+     "js": ["jquery.min.js", "contentScript.js"]
+   }
+  ],
+  "content_security_policy": "script-src https://*.google.com 'unsafe-eval'; object-src 'self'",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlmEfJE8H4sAqV1mvi+AriVBqxkaLHIYFgJYO+QPrgoFX7KFjJCXH5fEk4n1aBzp3QZxJ4yplSyfNkJmt0mVkWT0rgC24kLmmwC+PyxjlN2ie2TYS20lxalgJIFqns8tZIdY/N0mVO8YNzLrTaQpTtK+Y4XpU4+ZScUjCbUCTsDdDpD7HFNDFu3EV3CdVIU84pGoB3bR9lvTT+/7L/LODSoWUzV99FGs7v30h9qrZcU8jNk21j6McVXBLvAaKlQpJdzp5KLjLEWOhA7kHrBFrf/kdvGgovw874+gDqMQlOW3WuUqcD5lVOBuSI1W+TkPm6QWCS0prp2QsPjQJMED5FwIDAQAB",
+  "oauth2": {
+    "client_id": "688351606222-188aavbalb1q0q5c97fccjm2ip09lc63.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.readonly"
+    ]
+  },
+ "web_accessible_resources": [
+       "images/*"
+     ],
+  "browser_action": {
+  "default_icon": {
+        "16": "images/ivp16.png",
+        "32": "images/ivp32.png",
+        "48": "images/ivp48.png",
+        "128": "images/ivp128.png"
+      }
+    },
+  "icons": {
+    "16": "images/ivp16.png",
+    "32": "images/ivp32.png",
+    "48": "images/ivp48.png",
+    "128": "images/ivp128.png"
+    },
+  "manifest_version": 2
+}
