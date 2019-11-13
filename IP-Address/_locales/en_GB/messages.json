@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "IP Address",
+    "description": "This extension shows the internal IP addresses when you click the extension icon."
+  },
+  "appDesc": {
+    "message": "IP Address",
+    "description": "This extension shows the internal IP addresses when you click the extension icon."
+  }
+}
