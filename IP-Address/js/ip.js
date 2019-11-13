@@ -4,23 +4,20 @@ function getLocalIPs(callback) {
     var RTCPeerConnection = window.RTCPeerConnection ||
         window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
 
-    var pc = new RTCPeerConnection({
-        // Don't specify any stun/turn servers, otherwise you will
-        // also find your public IP addresses.
+    var pc = new RTCPeerConnection({        
         iceServers: []
     });
-    // Add a media line, this is needed to activate candidate gathering.
+
     pc.createDataChannel('');
     
-    // onicecandidate is triggered whenever a candidate has been found.
     pc.onicecandidate = function(e) {
-        if (!e.candidate) { // Candidate gathering completed.
+        if (!e.candidate) { 
             pc.close();
             callback(ips);
             return;
         }
         var ip = /^candidate:.+ (\S+) \d+ typ/.exec(e.candidate.candidate)[1];
-        if (ips.indexOf(ip) == -1) // avoid duplicate entries (tcp/udp)
+        if (ips.indexOf(ip) == -1) 
             ips.push(ip);
     };
     pc.createOffer(function(sdp) {
@@ -32,14 +29,9 @@ function getLocalIPs(callback) {
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         var ipaddress = '';
-        getLocalIPs(function(ips) { // <!-- ips is an array of local IP addresses.
+        getLocalIPs(function(ips) { 
             ipaddress = ips.join('\n');
-            sendResponse(ipaddress);
-            // callServer("uploadbeta", "London UK");
-            // callServer("happyukgo", "Tokyo Japan");  
-            // callThirdParty("https://api.ipify.org?format=json", "ipify.org");
+            sendResponse(ipaddress);          
         });   
-        return true;
-
-     
+        return true;    
 });
