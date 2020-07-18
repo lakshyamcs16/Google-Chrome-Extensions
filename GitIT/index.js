@@ -208,6 +208,7 @@ var gh = (function() {
   
   
     function fetchUserRepos(repoUrl) {
+      debugger
       xhrWithAuth('GET', repoUrl, false, onUserReposFetched);
     }
   
