@@ -43,7 +43,6 @@ function callback(response, elem) {
       }
     });
   }
-  
   $(elem || ".file-tree").append(html_tree);
 
   if (!elem)
