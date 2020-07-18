@@ -26,7 +26,6 @@ $(document).ready(function() {
 
   function callback(response, elem) {
     var html_tree = ``
-
     if(response && response.tree) {
         response.tree.forEach(item => {
            if(item.type !== 'dir' && item.type !== 'tree')  {
@@ -56,12 +55,3 @@ $(document).ready(function() {
         $(that).attr('data-clicked', "true")
       }
   }
-
-  /*
-  fetch('https://api.github.com/repos/lakshyamcs16/Alexa-Skills/git/trees/af3cdfa610b2f83854f8739e1033421e7c3ba211', {
-    method: 'GET',
-    headers: {
-        'Authorization': 'Bearer 15cef9505098c0e7d12ac819d8fc2593f2f21152'
-    }
-}).then(r => r.json()).then(r => console.log(r))
-*/
