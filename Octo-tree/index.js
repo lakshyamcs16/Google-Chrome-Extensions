@@ -29,7 +29,7 @@ $(document).ready(function() {
 
     if(response && response.tree) {
         response.tree.forEach(item => {
-            if(item.type === 'blob') {
+           if(item.type !== 'dir' && item.type !== 'tree')  {
                 html_tree += `<li>${item.path}</li>`
             }else{
                 html_tree += `<li class="folder-root closed"><a href="#" onclick="handleclick('${item.sha}', '${item.url}', this)" data-clicked="false">${item.path}</a><ul id="${item.sha}"></ul></li>`
@@ -37,7 +37,11 @@ $(document).ready(function() {
         });
     }else if(response) {
         response.forEach(item => {
-            html_tree += `<li><a href="#" onclick="handleclick('${item.sha}', '${item.git_url}', this)" data-clicked="false">${item.name}</a><ul id="${item.sha}"></ul></li>`
+            if(item.type !== 'dir' && item.type !== 'tree') {
+              html_tree += `<li>${item.path}</li>`
+            }else{
+              html_tree += `<li><a href="#" onclick="handleclick('${item.sha}', '${item.git_url}', this)" data-clicked="false">${item.name}</a><ul id="${item.sha}"></ul></li>`
+            }
         });
     }
     $(elem || ".file-tree").append(html_tree);
