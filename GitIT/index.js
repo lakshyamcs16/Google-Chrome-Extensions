@@ -2,8 +2,12 @@ var gh = (function() {
     'use strict';
   
     var signin_button;
+    var user_repo_select;
+    var repo_tree;
     var revoke_button;
     var user_info_div;
+    var access_token = null;
+    var login_name;
     var tokenFetcher = (function() {
       // Replace clientId and clientSecret with values obtained by you for your
       // application https://github.com/settings/applications.
@@ -11,11 +15,9 @@ var gh = (function() {
       // Note that in a real-production app, you may not want to store
       // clientSecret in your App code.
       var clientSecret = '7002690fad6c0002a5146938a5d54edd86a2c855';
-      var redirectUri = chrome.identity.getRedirectURL('provider_cb');
+      var redirectUri = `https://${chrome.runtime.id}.chromiumapp.org/provider_cb`;
       var redirectRe = new RegExp(redirectUri + '[#\?](.*)');
-  
-      var access_token = null;
-  
+
       return {
         getToken: function(interactive, callback) {
           // In case we already have an access_token cached, simply return it.
@@ -133,7 +135,6 @@ var gh = (function() {
             callback(error);
             return;
           }
-          debugger
           console.log(token)
           access_token = token;
           requestStart();
@@ -200,7 +201,8 @@ var gh = (function() {
     function populateUserInfo(user_info) {
       var elem = user_info_div;
       var nameElem = document.createElement('div');
-      nameElem.innerHTML = "<b>Hello " + user_info.name + "</b><br>"
+      login_name = user_info.login;
+      nameElem.innerHTML = "<b>Hello " + user_info.login + "</b><br>"
           + "Your github page is: " + user_info.html_url;
       elem.appendChild(nameElem);
     }
@@ -208,24 +210,20 @@ var gh = (function() {
   
   
     function fetchUserRepos(repoUrl) {
-      debugger
       xhrWithAuth('GET', repoUrl, false, onUserReposFetched);
     }
   
     function onUserReposFetched(error, status, response) {
       var elem = document.querySelector('#user_repos');
-      elem.value='';
       if (!error && status == 200) {
         console.log("Got the following user repos:", response);
         var user_repos = JSON.parse(response);
-        user_repos.forEach(function(repo) {
-          if (repo.private) {
-            elem.value += "[private repo]";
-          } else {
-            elem.value += repo.name;
-          }
-          elem.value += '\n';
+        var options = ``
+        user_repos.forEach(v => {
+            options += `<option value="${v.name}">${v.name}</option>`
         });
+        $(elem).append(options);
+        fetchRepoTree({ url: `https://api.github.com/repos/${login_name}/${user_repos[0].name}/contents/` }).then(r => callback(r))
       } else {
         console.log('infoFetch failed', error, status);
       }
@@ -234,6 +232,65 @@ var gh = (function() {
   
     // Handlers for the buttons's onclick events.
   
+    function rerender_repo_tree() {
+      fetchRepoTree({ url: `https://api.github.com/repos/${login_name}/${$(this).children("option:selected"). val()}/contents/` }).then(r => callback(r))
+    }
+
+    function fetchRepoTree(params) {
+      return fetch(params.url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${access_token}`
+        }
+      }).then(r => r.json())
+    }
+    
+    function callback(response, elem) {
+      var html_tree = ``
+      if (response && response.tree) {
+        response.tree.forEach(item => {
+          if (item.type !== 'dir' && item.type !== 'tree') {
+            html_tree += `<li>${item.path}</li>`
+          } else {
+            html_tree += `<li class="folder-root closed"><a href="#" data-sha="${item.sha}" data-url="${item.url}" data-clicked="false">${item.path}</a><ul id="${item.sha}"></ul></li>`
+          }
+        });
+      } else if (response) {
+        response.forEach(item => {
+          if (item.type !== 'dir' && item.type !== 'tree') {
+            html_tree += `<li>${item.path}</li>`
+          } else {
+            html_tree += `<li><a href="#" data-sha="${item.sha}" data-url="${item.git_url}" data-clicked="false">${item.name}</a><ul id="${item.sha}"></ul></li>`
+          }
+        });
+      }
+
+      if(!elem){
+        $('#repo_tree').html('');
+      }
+
+      $(elem || ".file-tree").append(html_tree);
+    
+      if (!elem) {
+        $(".file-tree").filetree();
+      }
+      $("a").on("click", handleclick);  
+      if(elem) {
+        $(`#loading`).remove();
+      }
+    }
+    
+    function handleclick() {
+      let url = $(this).attr("data-url");
+      let id = $(this).attr("data-sha");
+      
+      if ($(this).attr('data-clicked') === 'false') {
+        $(this).append(`<div id="loading"></div>`);
+        fetchRepoTree({ url }).then(r => callback(r, $('#' + id)[0]));
+        $(this).attr('data-clicked', "true")
+      }
+    }
+
     function interactiveSignIn() {
       disableButton(signin_button);
       tokenFetcher.getToken(true, function(error, access_token) {
@@ -266,14 +323,24 @@ var gh = (function() {
         revoke_button.onclick = revokeToken;
   
         user_info_div = document.querySelector('#user_info');
-  
+
+        user_repo_select = document.querySelector('#user_repos');
+        user_repo_select.onchange=rerender_repo_tree
+
         console.log(signin_button, revoke_button, user_info_div);
   
+        $(".file-tree").filetree({
+          animationSpeed: 'fast'
+        });
+    
+        $(".file-tree").filetree({
+          collapsed: true,
+        });
+        
         showButton(signin_button);
         getUserInfo(false);
       }
     };
   })();
-  
-  
+
   window.onload = gh.onload;
