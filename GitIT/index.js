@@ -11,10 +11,12 @@ var gh = (function() {
     var tokenFetcher = (function() {
       // Replace clientId and clientSecret with values obtained by you for your
       // application https://github.com/settings/applications.
-      var clientId = 'Iv1.cf032acb41714b4e';
+      var clientId = '8a6f545c0d52ad439341';
+      //'Iv1.cf032acb41714b4e';
       // Note that in a real-production app, you may not want to store
       // clientSecret in your App code.
-      var clientSecret = '7002690fad6c0002a5146938a5d54edd86a2c855';
+      var clientSecret = '53b6ce74fa2bc1204952325fed5bd2552ec26d94';
+      //'7002690fad6c0002a5146938a5d54edd86a2c855';
       var redirectUri = `https://${chrome.runtime.id}.chromiumapp.org/provider_cb`;
       var redirectRe = new RegExp(redirectUri + '[#\?](.*)');
 
@@ -31,7 +33,8 @@ var gh = (function() {
             'interactive': interactive,
             'url': 'https://github.com/login/oauth/authorize' +
                    '?client_id=' + clientId +
-                   '&redirect_uri=' + encodeURIComponent(redirectUri)
+                   '&redirect_uri=' + encodeURIComponent(redirectUri) +
+                   '&scope=repo'
           }
           chrome.identity.launchWebAuthFlow(options, function(redirectUri) {
             console.log('launchWebAuthFlow completed', chrome.runtime.lastError,
@@ -252,7 +255,7 @@ var gh = (function() {
           if (item.type !== 'dir' && item.type !== 'tree') {
             html_tree += `<li>${item.path}</li>`
           } else {
-            html_tree += `<li class="folder-root closed"><a href="#" data-sha="${item.sha}" data-url="${item.url}" data-clicked="false">${item.path}</a><ul id="${item.sha}"></ul></li>`
+            html_tree += `<li class="folder-root closed"><input type="radio" name="dir"><a href="#" data-sha="${item.sha}" data-url="${item.url}" data-clicked="false">${item.path}</a></input><ul id="${item.sha}"></ul></li>`
           }
         });
       } else if (response) {
@@ -260,7 +263,7 @@ var gh = (function() {
           if (item.type !== 'dir' && item.type !== 'tree') {
             html_tree += `<li>${item.path}</li>`
           } else {
-            html_tree += `<li><a href="#" data-sha="${item.sha}" data-url="${item.git_url}" data-clicked="false">${item.name}</a><ul id="${item.sha}"></ul></li>`
+            html_tree += `<li><input type="radio" name="dir"><a href="#" data-sha="${item.sha}" data-url="${item.git_url}" data-clicked="false">${item.name}</a></input><ul id="${item.sha}"></ul></li>`
           }
         });
       }
@@ -344,3 +347,19 @@ var gh = (function() {
   })();
 
   window.onload = gh.onload;
+
+
+  // //$('input[name="dir"]:checked').parent().find('a').attr('data-url')
+  // "https://github.com/lakshyamcs16/Alexa-Skills/tree/master/Good%20Moring,%20Friends"
+//   curl \
+//   -X PUT \
+//   -H 'Authorization: token e0c085f33f1a42c3a280863c6733582c6fe01ec3' \
+//   -H "Accept: application/vnd.github.v3+json" \
+//   -d '{"path": "test4.txt", "message": "Initial Commit", "committer": {"name": "<name>", "email": "<email>"}, "content": "bXkgbmV3IGZpbGUgY29udGVudHM=", "branch": "master"}' \
+//   https://api.github.com/repos/lakshyamcs16/Alexa-Skills/contents/tree/master/Good%20Moring,%20Friends/test4.txt
+
+  // curl \
+  // -X PUT \
+  // -H 'Authorization: token 615195a813618f326c45ca363427e5ca90165b38' \
+  // -d '{"message": "Initial Commit", "committer": {"name": "lakshyamc16", "email": "sethi.laskhya94@gmail.com"}, "content": "bXkgbmV3IGZpbGUgY29udGVudHM="}' \
+  // https://api.github.com/repos/lakshyamcs16/Alexa-Skills/contents/test4.txt
