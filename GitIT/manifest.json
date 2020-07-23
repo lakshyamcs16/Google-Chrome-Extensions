@@ -9,6 +9,7 @@
     "declarativeContent",
     "storage",
     "identity",
+    "tabs",
     "https://github.com/"
   ],
   "background": {
@@ -25,7 +26,8 @@
         "file-explore.css"
       ],
       "js": [
-        "jquery-3.5.1.min.js"
+        "jquery-3.5.1.min.js",
+        "contentScript.js"
       ]
     }
   ],
