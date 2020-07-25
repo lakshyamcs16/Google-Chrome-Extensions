@@ -1,6 +1,6 @@
 @font-face {
     font-family: FontAwesome;
-    src: url('chrome-extension://bboppmnhkmpgbdlkmmclpkhkcndfonjm/fonts/FontAwesome.otf');
+    src: url('chrome-extension://bcgkkpoeikbpljegjcdjfhcapdkggdmn/fonts/FontAwesome.otf');
   }
   
 .file-list, .file-list ul{
@@ -71,7 +71,7 @@ li.folder-root.open>ul{
    max-height:1000px;
 }
 #loading{
-    background-image: url('chrome-extension://bboppmnhkmpgbdlkmmclpkhkcndfonjm/images/loader16.gif');
+    background-image: url('chrome-extension://bcgkkpoeikbpljegjcdjfhcapdkggdmn/images/loader16.gif');
     display: block;
     background-size: 10px 10px;
     height: 10px;

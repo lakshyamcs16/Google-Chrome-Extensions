@@ -2,13 +2,15 @@ var gh = (function() {
     'use strict';
   
     var signin_button;
-    var code = "VGhlcmUgYXJlIHR3byBzb3J0ZWQgYXJyYXlzIG51bXMxIGFuZCBudW1zMiBvZiBzaXplIG0gYW5kIG4gcmVzcGVjdGl2ZWx5LkZpbmQgdGhlIG1lZGlhbiBvZiB0aGUgdHdvIHNvcnRlZCBhcnJheXMuIFRoZSBvdmVyYWxsIHJ1biB0aW1lIGNvbXBsZXhpdHkgc2hvdWxkIGJlIE8obG9nIChtK24pKS5Zb3UgbWF5IGFzc3VtZSBudW1zMSBhbmQgbnVtczLCoGNhbm5vdCBiZSBib3RoIGVtcHR5LgoKRXhhbXBsZSAxOgpudW1zMSA9IFsxLCAzXQpudW1zMiA9IFsyXQoKVGhlIG1lZGlhbiBpcyAyLjAKCkV4YW1wbGUgMjoKbnVtczEgPSBbMSwgMl0KbnVtczIgPSBbMywgNF0KClRoZSBtZWRpYW4gaXMgKDIgKyAzKS8yID0gMi41CgoKCmNsYXNzIFNvbHV0aW9uOgogwqAgwqBkZWYgZmluZE1lZGlhblNvcnRlZEFycmF5cyhzZWxmLCBudW1zMTogTGlzdFtpbnRdLCBudW1zMjogTGlzdFtpbnRdKSAtPiBmbG9hdDoKIMKgIMKgIMKgIMKgZGVmIG1lZGlhbihBLCBCKToKIMKgIMKgIMKgIMKgIMKgIMKgbSwgbiA9IGxlbihBKSwgbGVuKEIpCiDCoCDCoCDCoCDCoCDCoCDCoGlmIG0gPiBuOgogwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBBLCBCLCBtLCBuID0gQiwgQSwgbiwgbQogwqAgwqAgwqAgwqAgwqAgwqBpZiBuID09IDA6CiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHJhaXNlIFZhbHVlRXJyb3IK4oCLCiDCoCDCoCDCoCDCoCDCoCDCoGltaW4sIGltYXgsIGhhbGZfbGVuID0gMCwgbSwgKG0gKyBuICsgMSkgLyAyCiDCoCDCoCDCoCDCoCDCoCDCoHdoaWxlIGltaW4gPD0gaW1heDoKIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaSA9IChpbWluICsgaW1heCkgLyAyCiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGogPSBoYWxmX2xlbiAtIGkKIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaWYgaSA8IG0gYW5kIEJbai0xXSA+IEFbaV06CiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCMgaSBpcyB0b28gc21hbGwsIG11c3QgaW5jcmVhc2UgaXQKIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaW1pbiA9IGkgKyAxCiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGVsaWYgaSA+IDAgYW5kIEFbaS0xXSA+IEJbal06CiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCMgaSBpcyB0b28gYmlnLCBtdXN0IGRlY3JlYXNlIGl0CiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGltYXggPSBpIC0gMQogwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBlbHNlOgogwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAjIGkgaXMgcGVyZmVjdArigIsKIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaWYgaSA9PSAwOiBtYXhfb2ZfbGVmdCA9IEJbai0xXQogwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBlbGlmIGogPT0gMDogbWF4X29mX2xlZnQgPSBBW2ktMV0KIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgZWxzZTogbWF4X29mX2xlZnQgPSBtYXgoQVtpLTFdLCBCW2otMV0pCuKAiwogwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBpZiAobSArIG4pICUgMiA9PSAxOgogwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqByZXR1cm4gbWF4X29mX2xlZnQK4oCLCiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGlmIGkgPT0gbTogbWluX29mX3JpZ2h0ID0gQltqXQogwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBlbGlmIGogPT0gbjogbWluX29mX3JpZ2h0ID0gQVtpXQogwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBlbHNlOiBtaW5fb2ZfcmlnaHQgPSBtaW4oQVtpXSwgQltqXSkK4oCLCiDCoCDCoCDCoCDCoCDCoCDCoHJldHVybiAobWF4X29mX2xlZnQgKyBtaW5fb2ZfcmlnaHQpIC8gMi4w";
+    var code;
     var user_repo_select;
     var code_content_btn;
     var code_content_area;
     var code_push_btn;
+    var commit_message;
     var repo_tree;
     var revoke_button;
+    var user_repo;
     var user_info_div;
     var access_token = null;
     var login_name;
@@ -240,7 +242,8 @@ var gh = (function() {
     // Handlers for the buttons's onclick events.
   
     function rerender_repo_tree() {
-      fetchRepoTree({ url: `https://api.github.com/repos/${login_name}/${$(this).children("option:selected"). val()}/contents/` }).then(r => callback(r))
+      user_repo = $(this).children("option:selected").val();
+      fetchRepoTree({ url: `https://api.github.com/repos/${login_name}/${user_repo}/contents/` }).then(r => callback(r))
     }
 
     function fetchRepoTree(params) {
@@ -255,7 +258,7 @@ var gh = (function() {
     function fetchCodeFromPage() {
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {type:"leetcode"}, function(response){
-            //code = response;
+            code = response;
             $(code_content_area).text(response);
         });
       });
@@ -263,27 +266,30 @@ var gh = (function() {
 
     function pushCodeToGit() {
       let encoded_code = btoa(code);
-      let file_name = $('#file_name').val() || 'test'
-      fetch(`https://api.github.com/repos/lakshyamcs16/Alexa-Skills/contents/${file_name}.py`, {
+      let file_name = $('#file_name').val() || 'test';
+      let path = $('input[name="dir"]:checked').parent().find('a').attr('data-path');
+      path = path.replace(/\s/g, "%20");
+      
+      fetch(`https://api.github.com/repos/lakshyamcs16/${user_repo}/contents/${path}/${file_name}.py`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${access_token}`
         },
-        body: `{"message": "Initial Commit", "committer": {"name": "lakshyamc16", "email": "sethi.laskhya94@gmail.com"}, "content": "${code}"}`
+        body: `{"message": "${commit_message}", "committer": {"name": "${login_name}"}, "content": \`${encoded_code}\`}`
       }).then(r => r.json())
       .then(r => {
         $('#status').text('Code has been pushed successfully!')
       });
     }
 
-    function callback(response, elem) {
+    function callback(response, elem, prev_path="") {
       var html_tree = ``
       if (response && response.tree) {
         response.tree.forEach(item => {
           if (item.type !== 'dir' && item.type !== 'tree') {
             html_tree += `<li>${item.path}</li>`
           } else {
-            html_tree += `<li class="folder-root closed"><input type="radio" name="dir"><a href="#" data-sha="${item.sha}" data-url="${item.url}" data-clicked="false">${item.path}</a></input><ul id="${item.sha}"></ul></li>`
+            html_tree += `<li class="folder-root closed"><input type="radio" name="dir"><a href="#" data-sha="${item.sha}" data-url="${item.url}" data-clicked="false" data-path="${prev_path}/${item.path}">${item.path}</a></input><ul id="${item.sha}"></ul></li>`
           }
         });
       } else if (response) {
@@ -291,7 +297,7 @@ var gh = (function() {
           if (item.type !== 'dir' && item.type !== 'tree') {
             html_tree += `<li>${item.path}</li>`
           } else {
-            html_tree += `<li><input type="radio" name="dir"><a href="#" data-sha="${item.sha}" data-url="${item.git_url}" data-clicked="false">${item.name}</a></input><ul id="${item.sha}"></ul></li>`
+            html_tree += `<li><input type="radio" name="dir"><a href="#" data-sha="${item.sha}" data-url="${item.git_url}" data-clicked="false" data-path="${prev_path}/${item.path}">${item.name}</a></input><ul id="${item.sha}"></ul></li>`
           }
         });
       }
@@ -314,10 +320,11 @@ var gh = (function() {
     function handleclick() {
       let url = $(this).attr("data-url");
       let id = $(this).attr("data-sha");
-      
+      let prev_path = $(this).attr("data-path");
+
       if ($(this).attr('data-clicked') === 'false') {
         $(this).append(`<div id="loading"></div>`);
-        fetchRepoTree({ url }).then(r => callback(r, $('#' + id)[0]));
+        fetchRepoTree({ url }).then(r => callback(r, $('#' + id)[0], prev_path));
         $(this).attr('data-clicked', "true")
       }
     }

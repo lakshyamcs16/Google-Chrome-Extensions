@@ -3,9 +3,9 @@ chrome.runtime.onMessage.addListener(
         switch(message.type) {
             case "leetcode":
                 let result = ``;
-                result += getQuestion(message) + '\n\n';
-                result += getExample(message)+ '\n\n';
-                result += getCode(message);
+                result += `${getQuestion(message)}\n\n`;
+                result += `${getExample(message)}\n\n`;
+                result += `${getCode(message)}`;
 
                 sendResponse(result);
             break;
