@@ -19,7 +19,7 @@ function fetchRepoTree(params) {
   return fetch(params.url, {
     method: 'GET',
     headers: {
-      'Authorization': 'Bearer 15cef9505098c0e7d12ac819d8fc2593f2f21152'
+      'Authorization': 'Bearer 850e0e7e035513488e69e4f10aa59285687fa9fc'
     }
   }).then(r => r.json())
 }
