@@ -6,11 +6,13 @@
     <script src="file-explore.js"></script>
   </head>
   <body>
+    <div class="boxed wrapper">
     <div id="user_info"></div>
-    <button id="signin" style="display:none">Sign in</button>
+    <h1 style = "color:green">GitIt</h1>
+    <button class="signInButton" id="signin" style="display:none">Sign in</button>  <br><br>
     <button id="revoke" style="display:none">Revoke token</button>
-    <button id="fetch">Fetch Code</button>
-    <button id="push">Push</button>
+    <button class="signInButton" id="fetch">Fetch Code</button> <br><br>
+    <button class="signInButton" id="push">Push</button> <br><br>
     <input type="text" id="file_name" placeholder="Enter file name"/>
     <input type="text" id="commit_message" placeholder="Enter a commit massage"/>
     <div id="status"></div>
@@ -19,5 +21,6 @@
     <ul class="file-tree" id="repo_tree"></ul>
     <textarea id="code_content"></textarea>
     <script src="index.js"></script>
+    </div>
   </body>
 </html>

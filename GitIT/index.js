@@ -40,7 +40,7 @@ var gh = (function() {
             'url': 'https://github.com/login/oauth/authorize' +
                    '?client_id=' + clientId +
                    '&redirect_uri=' + encodeURIComponent(redirectUri) +
-                   '&scope=repo'
+                   '&scope=repo, user:email'
           }
           chrome.identity.launchWebAuthFlow(options, function(redirectUri) {
             console.log('launchWebAuthFlow completed', chrome.runtime.lastError,
@@ -232,6 +232,7 @@ var gh = (function() {
             options += `<option value="${v.name}">${v.name}</option>`
         });
         $(elem).append(options);
+        user_repo = user_repos[0].name;
         fetchRepoTree({ url: `https://api.github.com/repos/${login_name}/${user_repos[0].name}/contents/` }).then(r => callback(r))
       } else {
         console.log('infoFetch failed', error, status);
@@ -257,7 +258,7 @@ var gh = (function() {
     
     function fetchCodeFromPage() {
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {type:"leetcode"}, function(response){
+        chrome.tabs.sendMessage(tabs[0].id, {type:"leetcode"}, function(response=``){
             code = response;
             $(code_content_area).text(response);
         });
@@ -265,20 +266,23 @@ var gh = (function() {
     }
 
     function pushCodeToGit() {
-      let encoded_code = btoa(code);
+      let encoded_code = btoa(unescape(encodeURIComponent(code)));
       let file_name = $('#file_name').val() || 'test';
       let path = $('input[name="dir"]:checked').parent().find('a').attr('data-path');
-      path = path.replace(/\s/g, "%20");
+      commit_message = $("#commit_message").val() || "Initial commit";
+      path = path && path.length > 0? path.replace(/\s/g, "%20") + "/" : "/";
       
-      fetch(`https://api.github.com/repos/lakshyamcs16/${user_repo}/contents/${path}/${file_name}.py`, {
+      fetch(`https://api.github.com/repos/lakshyamcs16/${user_repo}/contents${path}${file_name}.py`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${access_token}`
         },
-        body: `{"message": "${commit_message}", "committer": {"name": "${login_name}"}, "content": \`${encoded_code}\`}`
+        body: `{"message": "${commit_message}", "committer": {"name": "${login_name}", "email": "${login_name}" }, "content": "${encoded_code}"}`
       }).then(r => r.json())
       .then(r => {
-        $('#status').text('Code has been pushed successfully!')
+        $('#status').text('Code has been pushed successfully!');
+      }).catch(error => {
+        $('#status').text('An error occured, please try again.');
       });
     }
 
@@ -390,18 +394,20 @@ var gh = (function() {
 
   window.onload = gh.onload;
 
+  /*
 
-  // //$('input[name="dir"]:checked').parent().find('a').attr('data-url')
-  // "https://github.com/lakshyamcs16/Alexa-Skills/tree/master/Good%20Moring,%20Friends"
-//   curl \
-//   -X PUT \
-//   -H 'Authorization: token e0c085f33f1a42c3a280863c6733582c6fe01ec3' \
-//   -H "Accept: application/vnd.github.v3+json" \
-//   -d '{"path": "test4.txt", "message": "Initial Commit", "committer": {"name": "<name>", "email": "<email>"}, "content": "bXkgbmV3IGZpbGUgY29udGVudHM=", "branch": "master"}' \
-//   https://api.github.com/repos/lakshyamcs16/Alexa-Skills/contents/tree/master/Good%20Moring,%20Friends/test4.txt
+  TODO:
 
-  // curl \
-  // -X PUT \
-  // -H 'Authorization: token 615195a813618f326c45ca363427e5ca90165b38' \
-  // -d '{"message": "Initial Commit", "committer": {"name": "lakshyamc16", "email": "sethi.laskhya94@gmail.com"}, "content": "bXkgbmV3IGZpbGUgY29udGVudHM="}' \
-  // https://api.github.com/repos/lakshyamcs16/Alexa-Skills/contents/test4.txt
+  1. Get file extension. [F]
+  2. Add question and example as comments based on file extension (for ex. use '#' in pythong '//' in javascript, java, c++ etc). [F]
+  3. UI Checks (Performance improvement): Check if code is already fetched? Don't fetch again. [I]
+  4. Add initial loader: If the user is logged in, it still shows sign in for a few seconds. Instead use loaders. [I]
+  5. Overall UI Improvements. [I]
+  6. Code Highlighting. [F]
+  7. Get Question name as default commit message. [I]
+  -----
+
+  F: Feature
+  I: Improvements
+
+   */
