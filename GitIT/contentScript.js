@@ -45,8 +45,8 @@ chrome.runtime.onMessage.addListener(
                 extension = getFormattedExtension(getExtension(message).toLowerCase());
                 object.extension = `.${extension}` || ".txt";
                 comment_type = extension_to_comment_map[extension];
-                result += `${comment_type.start} \n\n ${getQuestion(message)} \n\n ${comment_type.end}\n\n`;
-                result += `${comment_type.start} \n\n ${getExample(message)} \n\n ${comment_type.end}\n\n`;
+                result += `${comment_type.start}\n\n${getQuestion(message)}\n\n${comment_type.end}\n\n`;
+                result += `${comment_type.start}\n\n${getExample(message)}\n\n${comment_type.end}\n\n`;
                 result += `${getCode(message)}`;
                 object.result = result;
                 object.title = getQuestionTitle(message);

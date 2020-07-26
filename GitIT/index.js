@@ -288,6 +288,7 @@ var gh = (function() {
             extension = object.extension;
             $(code_content_area).text(code);
             commit_message_field.value = commit_message;
+            file_name.value = commit_message.replace(/\s/g, "_");
             file_extension_field.value = extension;
         });
       });
@@ -297,8 +298,7 @@ var gh = (function() {
       let encoded_code = btoa(unescape(encodeURIComponent(code)));
       let path = $('input[name="dir"]:checked').parent().find('a').attr('data-path');
       commit_message = commit_message_field.value || "Initial commit";
-      file_name.value = commit_message.replace(/\s/g, "_");
-      let file = commit_message_field.value || 'test';
+      let file = file_name.value || 'test';
       path = path && path.length > 0? path.replace(/\s/g, "%20") + "/" : "/";
       
       fetch(`https://api.github.com/repos/lakshyamcs16/${user_repo}/contents${path}${file}${extension}`, {
