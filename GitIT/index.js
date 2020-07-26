@@ -295,24 +295,37 @@ var gh = (function() {
     }
 
     function pushCodeToGit() {
+      $('#status').append(`<div id="loading"></div>`);
       let encoded_code = btoa(unescape(encodeURIComponent(code)));
       let path = $('input[name="dir"]:checked').parent().find('a').attr('data-path');
       commit_message = commit_message_field.value || "Initial commit";
       let file = file_name.value || 'test';
       path = path && path.length > 0? path.replace(/\s/g, "%20") + "/" : "/";
       
-      fetch(`https://api.github.com/repos/lakshyamcs16/${user_repo}/contents${path}${file}${extension}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${access_token}`
-        },
-        body: `{"message": "${commit_message}", "committer": {"name": "${login_name}", "email": "${login_name}" }, "content": "${encoded_code}"}`
-      }).then(r => r.json())
-      .then(r => {
-        $('#status').text('Code has been pushed successfully!');
-      }).catch(error => {
+      let message = 'Code has been pushed successfully!';
+      try {
+        fetch(`https://api.github.com/repos/lakshyamcs16/${user_repo}/contents${path}${file}${extension}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${access_token}`
+          },
+          body: `{"message": "${commit_message}", "committer": {"name": "${login_name}", "email": "${login_name}" }, "content": "${encoded_code}"}`
+        }).then(r => r.json())
+        .then(r => {
+          if(r.message) {
+            message = r.message;
+          }
+
+          $('#status').text(message);
+        }).catch(error => {
+          $('#status').text('An error occured, please try again.');
+        });
+      }catch(err) {
         $('#status').text('An error occured, please try again.');
-      });
+      }finally{
+        $("#status").html(message || ``);
+      }
+      
     }
 
     function callback(response, elem, prev_path="") {
