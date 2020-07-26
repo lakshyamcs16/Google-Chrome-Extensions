@@ -7,6 +7,7 @@ var gh = (function() {
     var code_content_btn;
     var code_content_area;
     var code_push_btn;
+    var commit_message_field;
     var commit_message;
     var revoke_button;
     var user_repo;
@@ -18,6 +19,26 @@ var gh = (function() {
     var repo_tree;
     var logo_text;
     var loader;
+    var extension;
+    var file_extension_field;
+    var extension_map = {
+      "c": "c",
+      "c++": "cpp",
+      "python": "py",
+      "java": "java",
+      "python3": "py",
+      "c#": "cs",
+      "javascript": "js",
+      "ruby": "rb",
+      "swift": "swift",
+      "go": "go",
+      "scala": "scala",
+      "kotlin": "kt",
+      "rust": "rs",
+      "php": "php",
+      "typescript": "js"
+    };
+
     var tokenFetcher = (function() {
       // Replace clientId and clientSecret with values obtained by you for your
       // application https://github.com/settings/applications.
@@ -205,14 +226,15 @@ var gh = (function() {
         hideButton(signin_button);
         
         showButton(revoke_button);
-        showButton(code_push_btn);
         showButton(code_content_btn);
-        showButton(commit_message);
-        showButton(user_repo_select);
-        showButton(code_content_area);
+        showButton(code_push_btn);
         showButton(file_name);
+        showButton(commit_message_field);
+        showButton(file_extension_field);
         showButton(repo_text);
+        showButton(user_repo_select);
         showButton(repo_tree);
+        showButton(code_content_area);
         hideButton(loader);
 
         fetchUserRepos(user_info["repos_url"]);
@@ -274,21 +296,25 @@ var gh = (function() {
     
     function fetchCodeFromPage() {
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {type:"leetcode"}, function(response=``){
-            code = response;
-            $(code_content_area).text(response);
+        chrome.tabs.sendMessage(tabs[0].id, {type:"leetcode"}, function(object={}){
+            code = object.result || "Please try the code highlighter or paste the code here.";
+            commit_message = object.title? object.title.trim() : "Enter a commit message";
+            extension = `.${extension_map[object.extension.toLowerCase()]}` || ".txt";
+            $(code_content_area).text(code);
+            commit_message_field.value = commit_message;
+            file_extension_field.value = extension;
         });
       });
     }
 
     function pushCodeToGit() {
       let encoded_code = btoa(unescape(encodeURIComponent(code)));
-      let file_name = file_name.value || 'test';
+      let file = file_name.value || 'test';
       let path = $('input[name="dir"]:checked').parent().find('a').attr('data-path');
-      commit_message = commit_message.value || "Initial commit";
+      commit_message = commit_message_field.value || "Initial commit";
       path = path && path.length > 0? path.replace(/\s/g, "%20") + "/" : "/";
       
-      fetch(`https://api.github.com/repos/lakshyamcs16/${user_repo}/contents${path}${file_name}.py`, {
+      fetch(`https://api.github.com/repos/lakshyamcs16/${user_repo}/contents${path}${file}${extension}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${access_token}`
@@ -397,13 +423,16 @@ var gh = (function() {
 
         file_name = document.querySelector('#file_name');
 
-        commit_message = document.querySelector('#commit_message');
+        commit_message_field = document.querySelector('#commit_message');
 
         repo_tree = document.querySelector('#repo_tree');
 
         logo_text = document.querySelector('#logo');
 
         loader = document.querySelector('#loader');
+
+        file_extension_field = document.querySelector('#file_extension');
+
         $(".file-tree").filetree({
           animationSpeed: 'fast'
         });

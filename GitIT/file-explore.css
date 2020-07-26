@@ -80,7 +80,7 @@ li.folder-root.open>ul{
     margin-top: 5px;
     margin-left: 5px;
 }
-.signInButton {
+/* .signInButton {
     position: relative;
     top: 5px;
     background-color: white;
@@ -96,7 +96,7 @@ li.folder-root.open>ul{
     border-radius: 4px;
   }
   .signInButton:hover {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50; 
     color: white;
   }
   .boxed {
@@ -109,7 +109,7 @@ li.folder-root.open>ul{
   }
   .wrapper {
       text-align: center;
-  }
+  } */
 
   @keyframes loader {
     from {display: 'block';}
