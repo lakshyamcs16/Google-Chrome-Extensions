@@ -51,7 +51,7 @@
     flex-direction: row;
 }
 .file-list .folder-root:before{
-    color:#FFD04E;
+    color:#6bbcfa;
     content: "\f07b";
 }
 .file-list .folder-root.open:before{
@@ -80,7 +80,7 @@ li.folder-root.open>ul{
     margin-top: 5px;
     margin-left: 5px;
 }
-/* .signInButton {
+.signInButton {
     position: relative;
     top: 5px;
     background-color: white;
@@ -94,22 +94,23 @@ li.folder-root.open>ul{
     font-size: 12px;
     transition-duration: 0.4s;
     border-radius: 4px;
+    cursor:pointer;
+    box-shadow: 3px 3px 3px #888888;
   }
   .signInButton:hover {
-    background-color: #4CAF50; 
+    background-color: #4CAF50; /* Green */
     color: white;
   }
   .boxed {
-    width: 300px;
+    width: 450px;
     border: 1px #1fa65d;
     padding: 4px;
     margin: 1px;
-    background-color: #f8da56;
-    text-align: center;
+    background-color: #faf7d9;
   }
   .wrapper {
       text-align: center;
-  } */
+  }
 
   @keyframes loader {
     from {display: 'block';}
@@ -119,4 +120,58 @@ li.folder-root.open>ul{
   .remove_loader {
     animation-name: loader;
     animation-duration: 2s;
+  }
+
+  .pushButton {
+    position: relative;
+    background-color: white;
+    color: black;
+    border: 1px solid #4CAF50;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    transition-duration: 0.4s;
+    border-radius: 4px;
+    width: 150px;
+    margin:0 20px;
+    display:inline-block;
+    cursor:pointer;
+    box-shadow: 3px 3px 3px #888888;
+  }
+
+  .pushButton:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
+
+  .row{
+  text-align:center;
+  margin-left:-30px;
+  margin-right:-30px;
+}
+input[type=text] {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #4CAF50;
+    border-radius: 4px;
+    font-size: 12px;
+}
+p {
+    color: green;
+    text-transform: uppercase;
+    text-align: left;
+}
+.select_repos {
+    margin-left:-20px;
+    margin-right:-20px;
+}
+.repo_label {
+    text-align: left;
+      margin: 10px;
+  }
+  .tree_structure {
+    margin: 25px;
   }
