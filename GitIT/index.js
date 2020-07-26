@@ -21,23 +21,7 @@ var gh = (function() {
     var loader;
     var extension;
     var file_extension_field;
-    var extension_map = {
-      "c": "c",
-      "c++": "cpp",
-      "python": "py",
-      "java": "java",
-      "python3": "py",
-      "c#": "cs",
-      "javascript": "js",
-      "ruby": "rb",
-      "swift": "swift",
-      "go": "go",
-      "scala": "scala",
-      "kotlin": "kt",
-      "rust": "rs",
-      "php": "php",
-      "typescript": "js"
-    };
+    
 
     var tokenFetcher = (function() {
       // Replace clientId and clientSecret with values obtained by you for your
@@ -294,12 +278,14 @@ var gh = (function() {
       }).then(r => r.json())
     }
     
+    
+
     function fetchCodeFromPage() {
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {type:"leetcode"}, function(object={}){
             code = object.result || "Please try the code highlighter or paste the code here.";
             commit_message = object.title? object.title.trim() : "Enter a commit message";
-            extension = `.${extension_map[object.extension.toLowerCase()]}` || ".txt";
+            extension = object.extension;
             $(code_content_area).text(code);
             commit_message_field.value = commit_message;
             file_extension_field.value = extension;
@@ -309,9 +295,10 @@ var gh = (function() {
 
     function pushCodeToGit() {
       let encoded_code = btoa(unescape(encodeURIComponent(code)));
-      let file = file_name.value || 'test';
       let path = $('input[name="dir"]:checked').parent().find('a').attr('data-path');
       commit_message = commit_message_field.value || "Initial commit";
+      file_name.value = commit_message.replace(/\s/g, "_");
+      let file = commit_message_field.value || 'test';
       path = path && path.length > 0? path.replace(/\s/g, "%20") + "/" : "/";
       
       fetch(`https://api.github.com/repos/lakshyamcs16/${user_repo}/contents${path}${file}${extension}`, {
@@ -452,13 +439,9 @@ var gh = (function() {
 
   TODO:
 
-  1. Get file extension. [F]
-  2. Add question and example as comments based on file extension (for ex. use '#' in pythong '//' in javascript, java, c++ etc). [F]
   3. UI Checks (Performance improvement): Check if code is already fetched? Don't fetch again. [I]
-  4. Add initial loader: If the user is logged in, it still shows sign in for a few seconds. Instead use loaders. [I]
   5. Overall UI Improvements. [I]
   6. Code Highlighting. [F]
-  7. Get Question name as default commit message. [I]
   
   -----
 
