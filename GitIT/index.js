@@ -8,12 +8,16 @@ var gh = (function() {
     var code_content_area;
     var code_push_btn;
     var commit_message;
-    var repo_tree;
     var revoke_button;
     var user_repo;
     var user_info_div;
     var access_token = null;
     var login_name;
+    var repo_text;
+    var file_name;
+    var repo_tree;
+    var logo_text;
+    var loader;
     var tokenFetcher = (function() {
       // Replace clientId and clientSecret with values obtained by you for your
       // application https://github.com/settings/applications.
@@ -34,13 +38,13 @@ var gh = (function() {
             callback(null, access_token);
             return;
           }
-  
+          
           var options = {
             'interactive': interactive,
             'url': 'https://github.com/login/oauth/authorize' +
                    '?client_id=' + clientId +
                    '&redirect_uri=' + encodeURIComponent(redirectUri) +
-                   '&scope=repo, user:email'
+                   '&scope=repo'
           }
           chrome.identity.launchWebAuthFlow(options, function(redirectUri) {
             console.log('launchWebAuthFlow completed', chrome.runtime.lastError,
@@ -199,11 +203,23 @@ var gh = (function() {
         var user_info = JSON.parse(response);
         populateUserInfo(user_info);
         hideButton(signin_button);
+        
         showButton(revoke_button);
+        showButton(code_push_btn);
+        showButton(code_content_btn);
+        showButton(commit_message);
+        showButton(user_repo_select);
+        showButton(code_content_area);
+        showButton(file_name);
+        showButton(repo_text);
+        showButton(repo_tree);
+        hideButton(loader);
+
         fetchUserRepos(user_info["repos_url"]);
       } else {
         console.log('infoFetch failed', error, status);
         showButton(signin_button);
+        hideButton(loader);
       }
     }
   
@@ -267,9 +283,9 @@ var gh = (function() {
 
     function pushCodeToGit() {
       let encoded_code = btoa(unescape(encodeURIComponent(code)));
-      let file_name = $('#file_name').val() || 'test';
+      let file_name = file_name.value || 'test';
       let path = $('input[name="dir"]:checked').parent().find('a').attr('data-path');
-      commit_message = $("#commit_message").val() || "Initial commit";
+      commit_message = commit_message.value || "Initial commit";
       path = path && path.length > 0? path.replace(/\s/g, "%20") + "/" : "/";
       
       fetch(`https://api.github.com/repos/lakshyamcs16/${user_repo}/contents${path}${file_name}.py`, {
@@ -377,7 +393,17 @@ var gh = (function() {
         code_push_btn = document.querySelector('#push');
         code_push_btn.onclick = pushCodeToGit;
 
+        repo_text = document.querySelector('#repo_text');
 
+        file_name = document.querySelector('#file_name');
+
+        commit_message = document.querySelector('#commit_message');
+
+        repo_tree = document.querySelector('#repo_tree');
+
+        logo_text = document.querySelector('#logo');
+
+        loader = document.querySelector('#loader');
         $(".file-tree").filetree({
           animationSpeed: 'fast'
         });
@@ -386,7 +412,6 @@ var gh = (function() {
           collapsed: true,
         });
         
-        showButton(signin_button);
         getUserInfo(false);
       }
     };
@@ -405,6 +430,7 @@ var gh = (function() {
   5. Overall UI Improvements. [I]
   6. Code Highlighting. [F]
   7. Get Question name as default commit message. [I]
+  
   -----
 
   F: Feature

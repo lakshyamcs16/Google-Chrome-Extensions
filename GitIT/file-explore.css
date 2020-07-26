@@ -110,3 +110,13 @@ li.folder-root.open>ul{
   .wrapper {
       text-align: center;
   }
+
+  @keyframes loader {
+    from {display: 'block';}
+    to {display: 'none';}
+  }
+
+  .remove_loader {
+    animation-name: loader;
+    animation-duration: 2s;
+  }
