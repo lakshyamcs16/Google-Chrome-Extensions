@@ -1,36 +1,35 @@
 <html>
-  <head>
-    <link rel="stylesheet" href="font-awesome.min.css">
-    <script src="jquery-3.5.1.min.js"></script>
-    <link href="file-explore.css" rel="stylesheet">
-    <script src="file-explore.js"></script>
-  </head>
-  <body>
-    <div class="boxed wrapper">
-    <h1 style = "color:green" id="logo">GitIt</h1>
-    <div id="user_info"></div>
-
-    <img src="./images/loader16.gif" height="20" width="20" id="loader"></img>
-    <button class="signInButton" id="signin" style="display:none">Sign in</button>  <br><br>
-
-    <button id="revoke" style="display:none">Revoke token</button>
-    <button class="signInButton" id="fetch" style="display:none">Fetch Code</button> <br><br>
-    <button class="signInButton" id="push" style="display:none">Push</button> <br><br>
-    <div id="status"></div>
-
-    <input type="text" id="file_name" placeholder="Enter file name" style="display:none"/>
-    <input type="text" id="file_extension" placeholder="Enter file extension" style="display:none"/>
-    <input type="text" id="commit_message" placeholder="Enter a commit massage" style="display:none"/>
-
-    <br><p style="display:none" id="repo_text"><b>Your repos:</b><br></p>
-
-    <select id="user_repos" style="display:none"></select>
-
-    <ul class="file-tree" id="repo_tree" style="display:none"></ul>
-
-    <textarea id="code_content" style="display:none"></textarea>
-
-    <script src="index.js"></script>
-    </div>
-  </body>
+   <head>
+      <link rel="stylesheet" href="font-awesome.min.css">
+      <script src="jquery-3.5.1.min.js"></script>
+      <link href="file-explore.css" rel="stylesheet">
+      <script src="file-explore.js"></script>
+   </head>
+   <body>
+      <div class="boxed wrapper">
+         <h1 style = "color:green" id="logo">Git It</h1>
+         <div id="user_info"></div>
+         <img src="./images/loader16.gif" height="20" width="20" id="loader"></img>
+         <button class="signInButton" id="signin" style="display:none">Sign in</button>  <br><br>
+         <button id="revoke" class="pushButton" style="display:none">Sign out</button> <br><br>
+         <div class="row">
+            <button class="pushButton" id="fetch" style="display:none">Fetch Code</button> 
+            <button class="pushButton" id="push" style="display:none">Push</button> <br><br>
+         </div>
+         <input type="text" class="label" id="file_name" placeholder="Enter file name" style="display:none"/> <br>
+         <input type="text" id="commit_message" placeholder="Enter a commit massage" style="display:none"/>
+         <div id="status"></div>
+         <div class="repo_label">
+            <br>
+            <p id="repo_text" style="display:none"><b>Your repos:</b><br></p>
+            <br>
+            <select id="user_repos" style="display:none"></select>
+            <div class="tree_structure">
+               <ul class="file-tree" id="repo_tree" style="display:none"></ul>
+            </div>
+         </div>
+         <textarea id="code_content" style="display:none; min-height: 200; min-width: 375; height: fit-content; width: fit-content"></textarea>
+         <script src="index.js"></script>
+      </div>
+   </body>
 </html>
