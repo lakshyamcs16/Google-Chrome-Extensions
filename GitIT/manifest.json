@@ -7,7 +7,6 @@
   "permissions": [
     "activeTab",
     "declarativeContent",
-    "storage",
     "identity",
     "tabs",
     "https://github.com/"

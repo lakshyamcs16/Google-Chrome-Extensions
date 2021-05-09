@@ -1,77 +1,90 @@
 @font-face {
   font-family: FontAwesome;
-  src: url('chrome-extension://__MSG_@@extension_id__/fonts/FontAwesome.otf');
+  src: url("chrome-extension://ahimpelckfoepolnblpndbmdplemnikl/fonts/FontAwesome.otf");
 }
 
-.file-list, .file-list ul{
+.file-list,
+.file-list ul {
   list-style-type: none;
-  font-size:1em;
-  line-height:1.8em;
-  margin-left:20px;
-  padding-left:18px;
-  border-left:1px dotted #aaa;
+  font-size: 1em;
+  line-height: 1.8em;
+  margin-left: 0px;
+  padding-left: 18px;
+  border-left: 1px dotted #aaa;
 }
-.file-list li{
+
+.file-list li {
   position: relative;
-  padding-left:25px;
+  padding-left: 25px;
 }
-.file-list li a{
+
+.file-list li a {
   text-decoration: none;
-  color:#444;  
+  color: #444;
 }
-.file-list li a:before{
-  display:block;
+
+.file-list li a:before {
+  display: block;
   content: " ";
-  width:10px;
-  height:1px;
-  position:absolute;
-  border-bottom:1px dotted #aaa;
-  top:.6em;
-  left:-14px;
+  width: 10px;
+  height: 1px;
+  position: absolute;
+  border-bottom: 1px dotted #aaa;
+  top: 0.6em;
+  left: -14px;
 }
-.file-list li:before{
+
+.file-list li:before {
   list-style-type: none;
   font-family: FontAwesome;
-  display:block;
-  content:'\f0f6';
-  position:absolute;
-  top:0px;
-  left:0px;
-  width:20px;
-  height:20px;
-  font-size:1.3em;
-  color:#555;
+  display: block;
+  content: "\f0f6";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 20px;
+  height: 20px;
+  font-size: 1.3em;
+  color: #555;
 }
-.file-list .folder-root{
+
+.file-list .folder-root {
   list-style-type: none;
 }
-.file-list .folder-root a{
-  text-decoration:none;
+
+.file-list .folder-root a {
+  text-decoration: none;
   display: inline-block;
   flex-direction: row;
 }
-.file-list .folder-root:before{
-  color:#6bbcfa;
+
+.file-list .folder-root:before {
+  color: #6bbcfa;
   content: "\f07b";
 }
-.file-list .folder-root.open:before{
+
+.file-list .folder-root.open:before {
   content: "\f07c";
 }
-li.folder-root ul{
-  transition: all .3s ease-in-out;
-  overflow:hidden;
+
+li.folder-root ul {
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
 }
-li.folder-root.closed>ul{
- opacity:0;
- max-height:0px;
+
+li.folder-root.closed > ul {
+  opacity: 0;
+  max-height: 0px;
 }
-li.folder-root.open>ul{
- opacity:1;
- display:block;
- max-height:1000px;
+
+li.folder-root.open > ul {
+  opacity: 1;
+  display: block;
+  max-height: 1000px;
 }
-#loading{
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/loader16.gif');
+
+#loading {
+  background-image: url("chrome-extension://ahimpelckfoepolnblpndbmdplemnikl/images/loader16.gif");
   display: block;
   background-size: 10px 10px;
   height: 10px;
@@ -80,13 +93,14 @@ li.folder-root.open>ul{
   margin-top: 5px;
   margin-left: 5px;
 }
-.signInButton {
+
+.boxed .signInButton {
   position: relative;
   top: 5px;
   background-color: white;
   color: black;
   width: 250px;
-  border: 1px solid #4CAF50;
+  border: 1px solid #4caf50;
   padding: 5px 5px;
   text-align: center;
   text-decoration: none;
@@ -94,39 +108,46 @@ li.folder-root.open>ul{
   font-size: 12px;
   transition-duration: 0.4s;
   border-radius: 4px;
-  cursor:pointer;
+  cursor: pointer;
   box-shadow: 3px 3px 3px #888888;
 }
-.signInButton:hover {
-  background-color: #4CAF50; /* Green */
+
+.boxed .signInButton:hover {
+  background-color: #4caf50; /* Green */
   color: white;
 }
+
 .boxed {
-  width: 450px;
+  min-width: 450px;
   border: 1px #1fa65d;
   padding: 4px;
   margin: 1px;
   background-color: #faf7d9;
 }
-.wrapper {
-    text-align: center;
+
+.boxed.wrapper {
+  text-align: center;
 }
 
 @keyframes loader {
-  from {display: 'block';}
-  to {display: 'none';}
+  from {
+    display: "block";
+  }
+  to {
+    display: "none";
+  }
 }
 
-.remove_loader {
+.boxed .remove_loader {
   animation-name: loader;
   animation-duration: 2s;
 }
 
-.pushButton {
+.boxed .pushButton {
   position: relative;
   background-color: white;
   color: black;
-  border: 1px solid #4CAF50;
+  border: 1px solid #4caf50;
   padding: 5px 5px;
   text-align: center;
   text-decoration: none;
@@ -134,44 +155,49 @@ li.folder-root.open>ul{
   transition-duration: 0.4s;
   border-radius: 4px;
   width: 150px;
-  margin:0 20px;
-  display:inline-block;
-  cursor:pointer;
+  margin: 0 20px;
+  display: inline-block;
+  cursor: pointer;
   box-shadow: 3px 3px 3px #888888;
 }
 
-.pushButton:hover {
-  background-color: #4CAF50; /* Green */
+.boxed .pushButton:hover {
+  background-color: #4caf50; /* Green */
   color: white;
 }
 
-.row{
-text-align:center;
-margin-left:-30px;
-margin-right:-30px;
+.boxed .row {
+  text-align: center;
 }
-input[type=text] {
+
+.boxed input[type="text"] {
   width: 90%;
   padding: 12px 20px;
   margin: 10px 0;
   box-sizing: border-box;
-  border: 1px solid #4CAF50;
+  border: 1px solid #4caf50;
   border-radius: 4px;
   font-size: 12px;
 }
-p {
+
+.boxed p {
   color: green;
   text-transform: uppercase;
   text-align: left;
 }
-.select_repos {
-  margin-left:-20px;
-  margin-right:-20px;
+
+.boxed .select_repos {
+  margin-left: -20px;
+  margin-right: -20px;
 }
-.repo_label {
+
+.boxed .repo_label {
   text-align: left;
-    margin: 10px;
+  margin: 10px;
+  margin-left: 27px;
 }
-.tree_structure {
+
+.boxed .tree_structure {
   margin: 25px;
+  margin-left: 5px;
 }
